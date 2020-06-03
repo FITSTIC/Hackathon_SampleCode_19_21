@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ProvaBlazor.Data.Migrations
+namespace ProvaBlazor.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,11 +47,24 @@ namespace ProvaBlazor.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -73,7 +85,7 @@ namespace ProvaBlazor.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -153,6 +165,63 @@ namespace ProvaBlazor.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Previsioni",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    TemperatureC = table.Column<int>(nullable: false),
+                    Summary = table.Column<string>(nullable: true),
+                    CityId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Previsioni", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Previsioni_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Cesena" });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 2, "Bologna" });
+
+            migrationBuilder.InsertData(
+                table: "Previsioni",
+                columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
+                values: new object[] { 1, null, new DateTime(2020, 5, 30, 14, 29, 37, 382, DateTimeKind.Local).AddTicks(58), "Sunny", 24 });
+
+            migrationBuilder.InsertData(
+                table: "Previsioni",
+                columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
+                values: new object[] { 2, null, new DateTime(2020, 5, 26, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6785), "Cloudly", 14 });
+
+            migrationBuilder.InsertData(
+                table: "Previsioni",
+                columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
+                values: new object[] { 3, null, new DateTime(2020, 6, 1, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6863), "Sunny", 32 });
+
+            migrationBuilder.InsertData(
+                table: "Previsioni",
+                columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
+                values: new object[] { 4, null, new DateTime(2020, 6, 3, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6870), "Partialy cloud", 22 });
+
+            migrationBuilder.InsertData(
+                table: "Previsioni",
+                columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
+                values: new object[] { 5, null, new DateTime(2020, 5, 24, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6874), "Sunny", 19 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -162,8 +231,7 @@ namespace ProvaBlazor.Data.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -189,8 +257,12 @@ namespace ProvaBlazor.Data.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Previsioni_CityId",
+                table: "Previsioni",
+                column: "CityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +283,16 @@ namespace ProvaBlazor.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Previsioni");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
         }
     }
 }

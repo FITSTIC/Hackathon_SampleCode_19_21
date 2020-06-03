@@ -1,7 +1,7 @@
 ﻿@page "/fetchdata"
-@attribute [Authorize]
 @using ProvaBlazor.Data
-@inject WeatherForecastService ForecastService
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext db
 
 <h1>Weather forecast</h1>
 
@@ -20,6 +20,7 @@ else
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
                 <th>Summary</th>
+                <th>City</th>
             </tr>
         </thead>
         <tbody>
@@ -30,17 +31,49 @@ else
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
+                    <td>@forecast.City?.Name</td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
+<EditForm Model="wf" OnSubmit="()=> SaveWeatherForecast()">
+    <label>Date</label> 
+    <InputDate class="form-control" @bind-Value="wf.Date"></InputDate>
+    <label>Temperature</label>
+     <InputNumber class="form-control" @bind-Value="wf.TemperatureC"></InputNumber>
+    <label>Summary</label>
+    <InputText class="form-control" @bind-Value="wf.Summary"></InputText>
+
+    <input type="submit" value="Save" class="btn btn-primary" />
+</EditForm>
+
 @code {
+    private WeatherForecast wf = new WeatherForecast()
+    {
+        Date = DateTime.Now
+    };
     private WeatherForecast[] forecasts;
+
+    private void SaveWeatherForecast()
+    {
+        db.Previsioni.Add(wf);
+        db.SaveChanges();
+
+        forecasts = db.Previsioni
+            .Include(x=>x.City) //JOIN su Cities
+            .OrderByDescending(p=>p.Date)
+            .ToArray();
+
+        StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        forecasts = await db.Previsioni
+            .Include(x=>x.City) //JOIN su Cities
+            .OrderByDescending(p=>p.Date)
+            .ToArrayAsync();
     }
 }
