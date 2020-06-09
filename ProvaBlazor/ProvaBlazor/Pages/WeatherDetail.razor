@@ -1,0 +1,83 @@
+﻿@page "/weather"
+@page "/weather/{Id:int}"
+@inject ApplicationDbContext db
+@inject NavigationManager navigationManager
+
+@using ProvaBlazor.Data
+@using Microsoft.EntityFrameworkCore
+
+@if (Id == 0)
+{
+    <h3>Inserisci una nuova previsione</h3>
+}
+else
+{
+    <h3>Dettaglio della previsione</h3>
+}
+
+<EditForm Model="wf" OnValidSubmit="()=> SaveWeatherForecast()">
+    <DataAnnotationsValidator/>
+
+    <label>Date</label>
+    <InputDate class="form-control" @bind-Value="wf.Date"></InputDate>
+    <label>Temperature</label>
+    <InputNumber class="form-control" @bind-Value="wf.TemperatureC"></InputNumber>
+    <label>Summary</label>
+    <InputText class="form-control" @bind-Value="wf.Summary"></InputText>
+    <label>City</label>
+    <select class="form-control" @bind="wf.CityId" required>
+        <option value="">Select a city</option>
+        @foreach (var city in cities)
+        {
+            <option value="@city.Id">@city.Name</option>
+        }
+    </select>
+    <input type="submit" value="Save" class="btn btn-primary" />
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private City[] cities;
+
+    private WeatherForecast wf;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cities = await db.Cities
+            .AsNoTracking() //per reperire dati in sola lettura
+            .OrderBy(x => x.Name)
+            .ToArrayAsync();
+
+        if (Id == 0)
+        {
+            wf = new WeatherForecast()
+            {
+                Date = DateTime.Now
+            };
+        }
+        else
+        {
+            wf = await db.Previsioni.FindAsync(Id);
+        }
+    }
+
+    private async Task SaveWeatherForecast()
+    {
+        if (Id == 0)
+        {
+            //sto inserendo una nuova previsione
+            db.Previsioni.Add(wf);
+            await db.SaveChangesAsync();
+
+            navigationManager.NavigateTo("/fetchdata");
+        }
+        else
+        {
+            //sto aggiornando il dettaglio di una previsione
+            await db.SaveChangesAsync();
+        }
+    }
+}

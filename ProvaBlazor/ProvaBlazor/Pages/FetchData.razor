@@ -13,6 +13,7 @@
 }
 else
 {
+    <a href="/weather" class="btn btn-primary">Inserisci</a>
     <table class="table">
         <thead>
             <tr>
@@ -21,6 +22,7 @@ else
                 <th>Temp. (F)</th>
                 <th>Summary</th>
                 <th>City</th>
+                <th>Comandi</th>
             </tr>
         </thead>
         <tbody>
@@ -32,42 +34,33 @@ else
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
                     <td>@forecast.City?.Name</td>
+                    <td>
+                        <a href="/weather/@forecast.Id" class="btn btn-link">Dettaglio</a>
+                        <button class="btn btn-danger" @onclick="()=>DeleteRow(forecast)">Elimina</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
-<EditForm Model="wf" OnSubmit="()=> SaveWeatherForecast()">
-    <label>Date</label> 
-    <InputDate class="form-control" @bind-Value="wf.Date"></InputDate>
-    <label>Temperature</label>
-     <InputNumber class="form-control" @bind-Value="wf.TemperatureC"></InputNumber>
-    <label>Summary</label>
-    <InputText class="form-control" @bind-Value="wf.Summary"></InputText>
 
-    <input type="submit" value="Save" class="btn btn-primary" />
-</EditForm>
 
 @code {
-    private WeatherForecast wf = new WeatherForecast()
-    {
-        Date = DateTime.Now
-    };
+    
     private WeatherForecast[] forecasts;
 
-    private void SaveWeatherForecast()
+    private async Task DeleteRow(WeatherForecast forecast)
     {
-        db.Previsioni.Add(wf);
+        db.Previsioni.Remove(forecast);
         db.SaveChanges();
 
-        forecasts = db.Previsioni
-            .Include(x=>x.City) //JOIN su Cities
-            .OrderByDescending(p=>p.Date)
-            .ToArray();
+        await OnInitializedAsync();
 
         StateHasChanged();
     }
+
+    
 
     protected override async Task OnInitializedAsync()
     {
