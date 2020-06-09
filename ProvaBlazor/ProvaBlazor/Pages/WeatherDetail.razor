@@ -25,13 +25,13 @@ else
     <label>Summary</label>
     <InputText class="form-control" @bind-Value="wf.Summary"></InputText>
     <label>City</label>
-    <select class="form-control" @bind="wf.CityId" required>
+    <InputSelectNumber class="form-control" @bind-Value="wf.CityId">
         <option value="">Select a city</option>
         @foreach (var city in cities)
         {
             <option value="@city.Id">@city.Name</option>
         }
-    </select>
+    </InputSelectNumber>
     <input type="submit" value="Save" class="btn btn-primary" />
 
 </EditForm>

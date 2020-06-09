@@ -9,7 +9,7 @@ using ProvaBlazor.Data;
 namespace ProvaBlazor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200603122937_init")]
+    [Migration("20200609132212_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -247,12 +247,14 @@ namespace ProvaBlazor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("CityId")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Summary")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TemperatureC")
@@ -268,35 +270,40 @@ namespace ProvaBlazor.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2020, 5, 30, 14, 29, 37, 382, DateTimeKind.Local).AddTicks(58),
+                            CityId = 1,
+                            Date = new DateTime(2020, 6, 5, 15, 22, 11, 874, DateTimeKind.Local).AddTicks(7038),
                             Summary = "Sunny",
                             TemperatureC = 24
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2020, 5, 26, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6785),
+                            CityId = 1,
+                            Date = new DateTime(2020, 6, 1, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(1933),
                             Summary = "Cloudly",
                             TemperatureC = 14
                         },
                         new
                         {
                             Id = 3,
-                            Date = new DateTime(2020, 6, 1, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6863),
+                            CityId = 1,
+                            Date = new DateTime(2020, 6, 7, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(1998),
                             Summary = "Sunny",
                             TemperatureC = 32
                         },
                         new
                         {
                             Id = 4,
-                            Date = new DateTime(2020, 6, 3, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6870),
+                            CityId = 1,
+                            Date = new DateTime(2020, 6, 9, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(2005),
                             Summary = "Partialy cloud",
                             TemperatureC = 22
                         },
                         new
                         {
                             Id = 5,
-                            Date = new DateTime(2020, 5, 24, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6874),
+                            CityId = 2,
+                            Date = new DateTime(2020, 5, 30, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(2009),
                             Summary = "Sunny",
                             TemperatureC = 19
                         });
@@ -357,7 +364,9 @@ namespace ProvaBlazor.Migrations
                 {
                     b.HasOne("ProvaBlazor.Data.City", "City")
                         .WithMany("Previsioni")
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

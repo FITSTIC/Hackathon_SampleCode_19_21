@@ -173,8 +173,8 @@ namespace ProvaBlazor.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(nullable: false),
                     TemperatureC = table.Column<int>(nullable: false),
-                    Summary = table.Column<string>(nullable: true),
-                    CityId = table.Column<int>(nullable: true)
+                    Summary = table.Column<string>(nullable: false),
+                    CityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,7 +184,7 @@ namespace ProvaBlazor.Migrations
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -200,27 +200,27 @@ namespace ProvaBlazor.Migrations
             migrationBuilder.InsertData(
                 table: "Previsioni",
                 columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
-                values: new object[] { 1, null, new DateTime(2020, 5, 30, 14, 29, 37, 382, DateTimeKind.Local).AddTicks(58), "Sunny", 24 });
+                values: new object[] { 1, 1, new DateTime(2020, 6, 5, 15, 22, 11, 874, DateTimeKind.Local).AddTicks(7038), "Sunny", 24 });
 
             migrationBuilder.InsertData(
                 table: "Previsioni",
                 columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
-                values: new object[] { 2, null, new DateTime(2020, 5, 26, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6785), "Cloudly", 14 });
+                values: new object[] { 2, 1, new DateTime(2020, 6, 1, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(1933), "Cloudly", 14 });
 
             migrationBuilder.InsertData(
                 table: "Previsioni",
                 columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
-                values: new object[] { 3, null, new DateTime(2020, 6, 1, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6863), "Sunny", 32 });
+                values: new object[] { 3, 1, new DateTime(2020, 6, 7, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(1998), "Sunny", 32 });
 
             migrationBuilder.InsertData(
                 table: "Previsioni",
                 columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
-                values: new object[] { 4, null, new DateTime(2020, 6, 3, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6870), "Partialy cloud", 22 });
+                values: new object[] { 4, 1, new DateTime(2020, 6, 9, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(2005), "Partialy cloud", 22 });
 
             migrationBuilder.InsertData(
                 table: "Previsioni",
                 columns: new[] { "Id", "CityId", "Date", "Summary", "TemperatureC" },
-                values: new object[] { 5, null, new DateTime(2020, 5, 24, 14, 29, 37, 386, DateTimeKind.Local).AddTicks(6874), "Sunny", 19 });
+                values: new object[] { 5, 2, new DateTime(2020, 5, 30, 15, 22, 11, 878, DateTimeKind.Local).AddTicks(2009), "Sunny", 19 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

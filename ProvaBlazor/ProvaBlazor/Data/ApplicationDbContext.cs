@@ -31,35 +31,40 @@ namespace ProvaBlazor.Data
                     Id = 1,
                     Date = DateTime.Now.AddDays(-4),
                     TemperatureC = 24,
-                    Summary = "Sunny"
+                    Summary = "Sunny",
+                    CityId=1
                 },
                 new WeatherForecast
                 {
                     Id = 2,
                     Date = DateTime.Now.AddDays(-8),
                     TemperatureC = 14,
-                    Summary = "Cloudly"
+                    Summary = "Cloudly",
+                    CityId = 1
                 },
                 new WeatherForecast
                 {
                     Id = 3,
                     Date = DateTime.Now.AddDays(-2),
                     TemperatureC = 32,
-                    Summary = "Sunny"
+                    Summary = "Sunny",
+                    CityId = 1
                 },
                 new WeatherForecast
                 {
                     Id = 4,
                     Date = DateTime.Now,
                     TemperatureC = 22,
-                    Summary = "Partialy cloud"
+                    Summary = "Partialy cloud",
+                    CityId = 1
                 },
                 new WeatherForecast
                 {
                     Id = 5,
                     Date = DateTime.Now.AddDays(-10),
                     TemperatureC = 19,
-                    Summary = "Sunny"
+                    Summary = "Sunny",
+                    CityId = 2
                 }
                 );
             
