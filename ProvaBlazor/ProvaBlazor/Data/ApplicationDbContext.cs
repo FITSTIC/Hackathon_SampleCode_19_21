@@ -10,6 +10,8 @@ namespace ProvaBlazor.Data
     {
         public DbSet<WeatherForecast> Previsioni { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Metereologo> Metereologi { get; set; }
+        public DbSet<Presentatore> Presentatori { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -25,6 +27,12 @@ namespace ProvaBlazor.Data
                 new City(2, "Bologna")
                 );
 
+            var meteorologo = new Metereologo { Id = 1, Name = "Carlo", Surname = "Nuvolari", Competenza="Venti" };
+            var presentatore = new Presentatore { Id = 2, Name = "Simone", Surname = "Mastri", Lingua="Italiano" };
+
+            builder.Entity<Metereologo>().HasData(meteorologo);
+            builder.Entity<Presentatore>().HasData(presentatore);
+
             builder.Entity<WeatherForecast>().HasData(
                 new WeatherForecast
                 {
@@ -32,7 +40,9 @@ namespace ProvaBlazor.Data
                     Date = DateTime.Now.AddDays(-4),
                     TemperatureC = 24,
                     Summary = "Sunny",
-                    CityId=1
+                    CityId=1,
+                    MeteorologoId = meteorologo.Id,
+                    PresentatoreId = presentatore.Id
                 },
                 new WeatherForecast
                 {
@@ -40,7 +50,9 @@ namespace ProvaBlazor.Data
                     Date = DateTime.Now.AddDays(-8),
                     TemperatureC = 14,
                     Summary = "Cloudly",
-                    CityId = 1
+                    CityId = 1,
+                    MeteorologoId = meteorologo.Id,
+                    PresentatoreId = presentatore.Id
                 },
                 new WeatherForecast
                 {
@@ -48,7 +60,9 @@ namespace ProvaBlazor.Data
                     Date = DateTime.Now.AddDays(-2),
                     TemperatureC = 32,
                     Summary = "Sunny",
-                    CityId = 1
+                    CityId = 1,
+                    MeteorologoId = meteorologo.Id,
+                    PresentatoreId = presentatore.Id
                 },
                 new WeatherForecast
                 {
@@ -56,7 +70,9 @@ namespace ProvaBlazor.Data
                     Date = DateTime.Now,
                     TemperatureC = 22,
                     Summary = "Partialy cloud",
-                    CityId = 1
+                    CityId = 1,
+                    MeteorologoId = meteorologo.Id,
+                    PresentatoreId = presentatore.Id
                 },
                 new WeatherForecast
                 {
@@ -64,7 +80,9 @@ namespace ProvaBlazor.Data
                     Date = DateTime.Now.AddDays(-10),
                     TemperatureC = 19,
                     Summary = "Sunny",
-                    CityId = 2
+                    CityId = 2,
+                    MeteorologoId = meteorologo.Id,
+                    PresentatoreId = presentatore.Id
                 }
                 );
             

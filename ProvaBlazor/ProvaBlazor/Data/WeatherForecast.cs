@@ -21,6 +21,12 @@ namespace ProvaBlazor.Data
         public int? CityId { get; set; }
         public City City { get; set; }
 
+        public int MeteorologoId { get; set; }
+        public Metereologo Meteorologo { get; set; }
+
+        public int PresentatoreId { get; set; }
+        public Presentatore Presentatore { get; set; }
+
         public WeatherForecast()
         {
 

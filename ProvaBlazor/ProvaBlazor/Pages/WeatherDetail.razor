@@ -32,6 +32,20 @@ else
             <option value="@city.Id">@city.Name</option>
         }
     </InputSelectNumber>
+    <InputSelectNumber class="form-control" @bind-Value="wf.MeteorologoId">
+        <option value="">seleziona un metereologo</option>
+        @foreach (var m in Meteorologi)
+        {
+            <option value="@m.Id">@m.Name</option>
+        }
+    </InputSelectNumber>
+    <InputSelectNumber class="form-control" @bind-Value="wf.PresentatoreId">
+        <option value="">seleziona un presentatore</option>
+        @foreach (var p in Presentatori)
+        {
+            <option value="@p.Id">@p.Name</option>
+        }
+    </InputSelectNumber>
     <input type="submit" value="Save" class="btn btn-primary" />
 
 </EditForm>
@@ -40,12 +54,16 @@ else
     [Parameter]
     public int Id { get; set; }
 
+    private Metereologo[] Meteorologi;
+    private Presentatore[] Presentatori;
     private City[] cities;
 
     private WeatherForecast wf;
 
     protected override async Task OnInitializedAsync()
     {
+        this.Meteorologi = await db.Metereologi.OrderBy(x => x.Name).ToArrayAsync();
+        this.Presentatori = await db.Presentatori.OrderBy(x => x.Name).ToArrayAsync();
         cities = await db.Cities
             .AsNoTracking() //per reperire dati in sola lettura
             .OrderBy(x => x.Name)
