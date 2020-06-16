@@ -2,6 +2,7 @@
 @page "/weather/{Id:int}"
 @inject ApplicationDbContext db
 @inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
 
 @using ProvaBlazor.Data
 @using Microsoft.EntityFrameworkCore
@@ -16,7 +17,7 @@ else
 }
 
 <EditForm Model="wf" OnValidSubmit="()=> SaveWeatherForecast()">
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
 
     <label>Date</label>
     <InputDate class="form-control" @bind-Value="wf.Date"></InputDate>
@@ -25,13 +26,14 @@ else
     <label>Summary</label>
     <InputText class="form-control" @bind-Value="wf.Summary"></InputText>
     <label>City</label>
-    <InputSelectNumber class="form-control" @bind-Value="wf.CityId">
+    <InputSelectNumber class="form-control js-select2" @bind-Value="wf.CityId">
         <option value="">Select a city</option>
         @foreach (var city in cities)
         {
             <option value="@city.Id">@city.Name</option>
         }
     </InputSelectNumber>
+    <label>Meteorologi</label>
     <InputSelectNumber class="form-control" @bind-Value="wf.MeteorologoId">
         <option value="">seleziona un metereologo</option>
         @foreach (var m in Meteorologi)
@@ -39,7 +41,8 @@ else
             <option value="@m.Id">@m.Name</option>
         }
     </InputSelectNumber>
-    <InputSelectNumber class="form-control" @bind-Value="wf.PresentatoreId">
+    <label for="selectPresentatori">Presentatori</label>
+    <InputSelectNumber id="selectPresentatori" class="form-control" @bind-Value="wf.PresentatoreId">
         <option value="">seleziona un presentatore</option>
         @foreach (var p in Presentatori)
         {
@@ -59,6 +62,14 @@ else
     private City[] cities;
 
     private WeatherForecast wf;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("activateSelect2");
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

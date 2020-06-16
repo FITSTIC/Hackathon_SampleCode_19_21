@@ -24,7 +24,13 @@ namespace ProvaBlazor.Data
 
             builder.Entity<City>().HasData(
                 new City(1,"Cesena"),
-                new City(2, "Bologna")
+                new City(2, "Bologna"),
+                new City(3, "Rimini"),
+                new City(4, "San Marino"),
+                new City(5, "Forlì"),
+                new City(6, "Imola"),
+                new City(7, "Faenza"),
+                new City(8, "Ravenna")
                 );
 
             var meteorologo = new Metereologo { Id = 1, Name = "Carlo", Surname = "Nuvolari", Competenza="Venti" };
