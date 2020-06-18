@@ -17,20 +17,20 @@ namespace ProvaBlazor.Data
             : base(options)
         {
         }
-
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<City>().HasData(
-                new City(1,"Cesena"),
-                new City(2, "Bologna"),
-                new City(3, "Rimini"),
-                new City(4, "San Marino"),
-                new City(5, "Forlì"),
-                new City(6, "Imola"),
-                new City(7, "Faenza"),
-                new City(8, "Ravenna")
+                new City(1,"Cesena", "Casa"),
+                new City(2, "Bologna", "Stazione"),
+                new City(3, "Rimini", "Casa"),
+                new City(4, "San Marino", "Casa"),
+                new City(5, "Forlì", "Casa"),
+                new City(6, "Imola", "Casa"),
+                new City(7, "Faenza", "Casa"),
+                new City(8, "Ravenna", "Casa")
                 );
 
             var meteorologo = new Metereologo { Id = 1, Name = "Carlo", Surname = "Nuvolari", Competenza="Venti" };

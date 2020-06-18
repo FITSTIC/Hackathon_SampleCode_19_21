@@ -11,6 +11,7 @@ namespace ProvaBlazor.Data
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
 
         public List<WeatherForecast> Previsioni { get; set; }
 
@@ -19,10 +20,11 @@ namespace ProvaBlazor.Data
 
         }
 
-        public City(int id, string name)
+        public City(int id, string name, string descr)
         {
             Id = id;
             Name = name;
+            Description = descr;
         }
     }
 }
